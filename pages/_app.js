@@ -1,6 +1,9 @@
 import Head from 'next/head';
 import React from "react";
 import { Global, css } from '@emotion/react';
+// JS COMPONENTS
+import Navbar from '../layout/navbar';
+import Footer from '../layout/footer';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -41,7 +44,12 @@ function MyApp({ Component, pageProps }) {
 				}
 			`}
 		/>
-		<Component {...pageProps} />
+		<div style={{display:"flex", flexDirection:"column", height:"100vh", width:"100%"}}>
+			<Navbar />
+			<Component {...pageProps} />
+			<Footer />
+		</div>
+
 	</>
 	)
 }

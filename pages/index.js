@@ -1,7 +1,126 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { useRouter } from 'next/router'
+import {useState, useEffect} from 'react';
+import styled from '@emotion/styled';
 
 export default function Home() {
+  const router = useRouter();
+  const [campaigns, setCampaigns] = useState([])
+
+  const handleCampaignClick = (campaign) => {
+    router.push(`/campaign/${campaign.id}`)
+  }
+
+  useEffect(() => {
+		async function getCampaign() {
+			try {
+				let response = await fetch('http://localhost:4000/campaigns');
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				let result = await response.json();
+				if (result.error || result.status === "failed") {
+					throw new Error(`Fetch - Update failed. Please check console logs. ${result.error}`);
+				}
+				setCampaigns(result.campaigns)
+			} catch(e) {
+				console.error('Error is: ', e);
+			}
+		}
+		getCampaign()
+  }, [])
+  console.log('campaigns', campaigns)
   return (
-    <p>HI</p>
+    <>
+    <Head>
+      <title>Loblaw | Home</title>
+    </Head>
+    <IndexContainer>
+      <TableWrapper>
+        <thead>
+          <tr>
+            <ThWrapper>ID</ThWrapper>
+            <ThWrapper>NAME</ThWrapper>
+          </tr>
+        </thead>
+        <tbody>
+          {campaigns.length !== 0 && campaigns.map((campaign, index) => {
+            return (
+              <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
+                <TdWrapper>{campaign.id}</TdWrapper>
+                <TdWrapper>{campaign.name}</TdWrapper>
+              </TrWrapper>
+            )
+          })}
+        </tbody>
+      </TableWrapper>
+    </IndexContainer>
+    </>
   )
 }
+
+const ColorContrast = {
+  red: "#FFDBDB",
+  green: "#ADFFAD",
+  blue: "#DBDBFF",
+  yellow: "#121200",
+  purple: "#FFC8FF",
+  orange: "#241800"
+}
+
+/**
+ * PAGE STYLING 
+ */
+// Main Container Styling
+const IndexContainer = styled.div({
+  margin: "0 auto",
+  maxWidth: "500px",
+  width: "100%",
+  display: "flex",
+  flex: "1 1 0%",
+  justifyContent: "center", 
+  alignItems: "center",
+})
+const TrWrapper = styled.tr`
+  background-color: ${({ color }) => color.toLowerCase()};
+  color: ${({ color }) => ColorContrast[color.toLowerCase()]};
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+		background-color: gray;
+	}
+`;
+// TH styling
+const ThWrapper = styled.th`
+  text-transform: uppercase;
+  padding: 15px;
+  text-align: left;
+`;
+// TD styling
+const TdWrapper = styled.td`
+  padding: 15px;
+  text-align: left;
+`;
+const TableWrapper = styled.table`
+  width: 100%;
+
+  box-shadow: 0px 0px 17px 1px #a7a7a7;
+  thead {
+    background: black;
+    color: white;
+    font-size: 18px;
+  }
+`;
+// const TableWrapper = div
+// table {
+//   font-family: arial, sans-serif;
+//   border-collapse: collapse;
+//   width: 100%;
+// }
+
+// td, th {
+//   border: 1px solid #dddddd;
+//   text-align: left;
+//   padding: 8px;
+// }
