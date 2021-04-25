@@ -15,6 +15,7 @@ const Navbar = () => (
 
 export default Navbar;
 
+// Navbar Styling
 const NavbarContainer = styled.div`
 	display: flex;
 	justify-content: center;

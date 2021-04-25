@@ -1,9 +1,23 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
+/**
+ * Footer Component
+ * @returns 
+ */
 const Footer = () => (
-  <div style={{display:"flex", justifyContent:"center", alignItems:"center", background:"black", color: "white"}}>
+  <NavbarContainer>
 		<p>This is developed by Parthipan Sekar</p>
-	</div>
+	</NavbarContainer>
 )
 
 export default Footer;
+
+// Footer Styling
+const NavbarContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: black;
+	color: white
+`;
