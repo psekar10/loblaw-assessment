@@ -49,6 +49,9 @@ function SkeletonLoader({
 
 export default SkeletonLoader;
 
+/**
+ * Page Styling
+ */
 const skeletonKeyframes = keyframes`
 	0% {
 		background-position: -200px 0;
