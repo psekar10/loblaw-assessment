@@ -2,10 +2,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router'
 import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
+// JS COMPONENTS
+import SkeletonLoader from '../components/skeletonloader';
 
 export default function Home() {
   const router = useRouter();
-  const [campaigns, setCampaigns] = useState([])
+  const [campaigns, setCampaigns] = useState([]);
+  const [pending, setPending] = useState(true);
 
   const handleCampaignClick = (campaign) => {
     window.localStorage.setItem('color', campaign.name);
@@ -26,7 +29,9 @@ export default function Home() {
 				setCampaigns(result.campaigns)
 			} catch(e) {
 				console.error('Error is: ', e);
-			}
+			} finally {
+        setPending(false);
+      }
 		}
 		getCampaign()
   }, [])
@@ -38,30 +43,34 @@ export default function Home() {
     </Head>
     <IndexContainer>
       <h2>Campaign List</h2>
-      <TableWrapper>
-        <thead>
-          <tr>
-            <ThWrapper>ID</ThWrapper>
-            <ThWrapper>NAME</ThWrapper>
-          </tr>
-        </thead>
-        <tbody>
-          {campaigns.length !== 0 && campaigns.map((campaign, index) => {
-            return (
-              <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
-                <TdWrapper>{campaign.id}</TdWrapper>
-                <TdWrapper>
-                  <div style={{display:"flex"}}>
-                    <ColorWrapper color={campaign.name.toLowerCase()} />
-                    {campaign.name}
-                  </div>
+      { !pending ? (
+        <TableWrapper>
+          <thead>
+            <tr>
+              <ThWrapper>ID</ThWrapper>
+              <ThWrapper>NAME</ThWrapper>
+            </tr>
+          </thead>
+          <tbody>
+            {campaigns.length !== 0 && campaigns.map((campaign, index) => {
+              return (
+                <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
+                  <TdWrapper>{campaign.id}</TdWrapper>
+                  <TdWrapper>
+                    <div style={{display:"flex"}}>
+                      <ColorWrapper color={campaign.name.toLowerCase()} />
+                      {campaign.name}
+                    </div>
 
-                </TdWrapper>
-              </TrWrapper>
-            )
-          })}
-        </tbody>
-      </TableWrapper>
+                  </TdWrapper>
+                </TrWrapper>
+              )
+            })}
+          </tbody>
+        </TableWrapper>
+      ) : (
+        <SkeletonLoader count={19} width="500px" />
+      )}
     </IndexContainer>
     </>
   )
