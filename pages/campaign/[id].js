@@ -3,8 +3,11 @@ import Link from "next/link";
 import { useRouter } from 'next/router'
 import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
+// JS COMPONENT
+import SkeletonLoader from '../../components/skeletonloader';
 // SVG
 import BackSVG from '../../assets/back'
+import ErrorSVG from '../../assets/error'
 
 const Campaign = () => {
 	const router = useRouter();
@@ -15,6 +18,7 @@ const Campaign = () => {
 	const [campaignDetails, setCampaignDetails] = useState([]);
 	const [summmationCampaignDetails, setSummmationCampaignDetails] = useState([]);
 	const [errorOccured, setErrorOccured] = useState(false);
+	const [pending, setPending] = useState(true)
 	async function getCampaign(timerCount) {
 		try {
 			let response = await fetch(`http://localhost:4000/campaigns/${id}?number=${timerCount}`);
@@ -38,6 +42,8 @@ const Campaign = () => {
 		} catch(e) {
 			console.error('Error is: ', e);
 			setErrorOccured(true);
+		} finally {
+			setPending(false);
 		}
 	}
   useEffect(() => {
@@ -61,63 +67,68 @@ const Campaign = () => {
 				<title>Loblaw | Performance metrics</title>
 			</Head>
 			<CampaignContainer>
-				{!errorOccured ? (
-					<>
-						<Heading2>Performance Metrics - <span style={{color: color && color.toLowerCase()}}>{color}</span> campaign</Heading2>
-						<Link href="/">
-							<AnchorTag>
-								<BackSVG height="25px" width="25px"/>
-							</AnchorTag>
-						</Link>
-						<TableWrapper>
-							<tbody>
-								<TrWrapper>
-									<td>Current Number</td>
-									<td>{timerCount-1}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Most Recent Impressions</td>
-									<td>{campaignDetails.impressions}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Most Recent Clicks</td>
-									<td>{campaignDetails.clicks}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Most Recent Users</td>
-									<td>{campaignDetails.users}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Most Recent CTR</td>
-									<td>{((campaignDetails.clicks/campaignDetails.impressions)/100).toFixed(7)}</td>
-								</TrWrapper>
+				{!pending ? (
+					!errorOccured ? (
+						<>
+							<Heading2>Performance Metrics - <span style={{color: color && color.toLowerCase()}}>{color}</span> campaign</Heading2>
+							<Link href="/">
+								<AnchorTag>
+									<BackSVG height="25px" width="25px"/>
+								</AnchorTag>
+							</Link>
+							<TableWrapper>
+								<tbody>
+									<TrWrapper>
+										<td>Current Number</td>
+										<td>{timerCount-1}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Most Recent Impressions</td>
+										<td>{campaignDetails.impressions}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Most Recent Clicks</td>
+										<td>{campaignDetails.clicks}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Most Recent Users</td>
+										<td>{campaignDetails.users}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Most Recent CTR</td>
+										<td>{((campaignDetails.clicks/campaignDetails.impressions)/100).toFixed(7)}</td>
+									</TrWrapper>
 
-								<TrWrapper>
-									<td>Total Impressions</td>
-									<td>{summmationCampaignDetails.impressions}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Total Clicks</td>
-									<td>{summmationCampaignDetails.clicks}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Total Users</td>
-									<td>{summmationCampaignDetails.users}</td>
-								</TrWrapper>
-								<TrWrapper>
-									<td>Total CTR</td>
-									<td>{((summmationCampaignDetails.clicks/summmationCampaignDetails.impressions)/100).toFixed(7)}</td>
-								</TrWrapper>
+									<TrWrapper>
+										<td>Total Impressions</td>
+										<td>{summmationCampaignDetails.impressions}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Total Clicks</td>
+										<td>{summmationCampaignDetails.clicks}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Total Users</td>
+										<td>{summmationCampaignDetails.users}</td>
+									</TrWrapper>
+									<TrWrapper>
+										<td>Total CTR</td>
+										<td>{((summmationCampaignDetails.clicks/summmationCampaignDetails.impressions)/100).toFixed(7)}</td>
+									</TrWrapper>
 
-							</tbody>					
-						</TableWrapper>
-					</>
+								</tbody>					
+							</TableWrapper>
+						</>
+					) : (
+						<>
+							<ErrorSVG height="150px" width="150px"/>
+							<Link href="/">GO TO HOME PAGE</Link>
+						</>
+					)
 				) : (
-					<>
-						<p>ERROR OCCURED</p>
-						<Link href="/">GO TO HOME PAGE</Link>
-					</>
+					<SkeletonLoader count={25} width="500px" />
 				)}
+
 			</CampaignContainer>
 		</>
 	)

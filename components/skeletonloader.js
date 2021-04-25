@@ -23,10 +23,6 @@ function SkeletonLoader({
       style.height = height;
     }
 
-    if (width !== null && height !== null) {
-      style.borderRadius = "50%";
-    }
-
     elements.push(
       <SkeletonWrapper
         key={i}

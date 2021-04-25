@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Logo({height, width}) {
 	return (
-    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width={width} height={height} viewBox="0 0 596 253.334" overflow="visible" enableBackground="new 0 0 596 253.334" xmlSpace="preserve" class=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width={width} height={height} viewBox="0 0 596 253.334" overflow="visible" enableBackground="new 0 0 596 253.334" xmlSpace="preserve" className=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/>
       <g>
         <g>
           <path fill="#686C70" d="M46.346,207.675l-0.693,1.67c-0.664-0.455-1.701-0.684-3.122-0.684c-1.332,0-2.398,0.545-3.201,1.623    c-0.804,1.082-1.205,2.471-1.205,4.17c0,1.627,0.415,2.953,1.232,3.967c0.824,1.012,1.893,1.518,3.192,1.518    c1.422,0,2.515-0.475,3.277-1.424l1.14,1.492c-1.203,1.117-2.747,1.678-4.635,1.678c-1.983,0-3.539-0.678-4.681-2.021    c-1.138-1.342-1.708-3.119-1.708-5.322c0-2.135,0.608-3.904,1.823-5.313c1.21-1.408,2.785-2.115,4.709-2.115    C44.123,206.913,45.413,207.169,46.346,207.675"/>

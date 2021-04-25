@@ -4,18 +4,29 @@ import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
 // JS COMPONENTS
 import SkeletonLoader from '../components/skeletonloader';
-
+/**
+ *  Home Page
+ * @returns 
+ */
 export default function Home() {
   const router = useRouter();
   const [campaigns, setCampaigns] = useState([]);
   const [pending, setPending] = useState(true);
-
+  /**
+   *  Function for the click event
+   * @param {*} campaign 
+   */
   const handleCampaignClick = (campaign) => {
     window.localStorage.setItem('color', campaign.name);
     router.push(`/campaign/${campaign.id}`)
   }
-
+  /**
+   *  useEffect - to get the campaigns
+   */
   useEffect(() => {
+    /**
+     * Function to get the campaign
+     */
 		async function getCampaign() {
 			try {
 				let response = await fetch('http://localhost:4000/campaigns');
@@ -35,7 +46,7 @@ export default function Home() {
 		}
 		getCampaign()
   }, [])
-  console.log('campaigns', campaigns)
+
   return (
     <>
     <Head>
