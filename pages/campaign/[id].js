@@ -7,7 +7,7 @@ const Campaign = () => {
 	const router = useRouter();
 	const {query: {id}} = router;
 	// State Initialization
-	const [timerCount, setTimerCount] = useState(0)
+	const [timerCount, setTimerCount] = useState(0);
 	const [campaignDetails, setCampaignDetails] = useState([]);
 	const [summmationCampaignDetails, setSummmationCampaignDetails] = useState([]);
 	const [errorOccured, setErrorOccured] = useState(false);
@@ -35,10 +35,6 @@ const Campaign = () => {
 			setErrorOccured(true);
 		}
 	}
-
-	console.log('campaignDetails', campaignDetails);
-	console.log('summmationCampaignDetails', summmationCampaignDetails);
-	console.log('timerCount', timerCount)
   useEffect(() => {
 		let intervalID
 		if (id !== undefined) {
