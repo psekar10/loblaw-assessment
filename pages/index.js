@@ -51,6 +51,8 @@ export default function Home() {
     <>
     <Head>
       <title>Loblaw | Home</title>
+      <link rel="canonical" href="" />
+      <meta name="description" content="Loblaw Campaign list" />
     </Head>
     <IndexContainer>
       <h2>Campaign List</h2>

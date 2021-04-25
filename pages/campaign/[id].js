@@ -65,6 +65,7 @@ const Campaign = () => {
 		<>
 			<Head>
 				<title>Loblaw | Performance metrics</title>
+				<meta name="robots" content="noindex, nofollow" />
 			</Head>
 			<CampaignContainer>
 				{!pending ? (
