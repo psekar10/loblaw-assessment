@@ -1,14 +1,17 @@
 import Head from 'next/head';
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
 // JS COMPONENT
 import SkeletonLoader from '../../components/skeletonloader';
 // SVG
-import BackSVG from '../../assets/back'
-import ErrorSVG from '../../assets/error'
-
+import BackSVG from '../../assets/back';
+import ErrorSVG from '../../assets/error';
+/**
+ *  Campaign details component
+ * @returns 
+ */
 const Campaign = () => {
 	const router = useRouter();
 	const {query: {id}} = router;
@@ -18,7 +21,11 @@ const Campaign = () => {
 	const [campaignDetails, setCampaignDetails] = useState([]);
 	const [summmationCampaignDetails, setSummmationCampaignDetails] = useState([]);
 	const [errorOccured, setErrorOccured] = useState(false);
-	const [pending, setPending] = useState(true)
+	const [pending, setPending] = useState(true);
+	/**
+	 *  Function to get the campaignDetails
+	 * @param {*} timerCount 
+	 */
 	async function getCampaign(timerCount) {
 		try {
 			let response = await fetch(`http://localhost:4000/campaigns/${id}?number=${timerCount}`);
@@ -46,6 +53,9 @@ const Campaign = () => {
 			setPending(false);
 		}
 	}
+	/**
+	 *  useEffect - Start the interval
+	 */
   useEffect(() => {
 		let intervalID
 		if (id !== undefined) {
@@ -55,12 +65,15 @@ const Campaign = () => {
 			clearInterval(intervalID)
 		}
   }, [id, timerCount])
-
+	/**
+	 * useEffect - Start the initial call for campaign details
+	 */
   useEffect(() => {
 		if (id !== undefined) {
 			getCampaign(timerCount)
 		}
   }, [id])
+
   return (
 		<>
 			<Head>
@@ -99,7 +112,7 @@ const Campaign = () => {
 										<td>Most Recent CTR</td>
 										<td>{((campaignDetails.clicks/campaignDetails.impressions)/100).toFixed(7)}</td>
 									</TrWrapper>
-
+									{/* Total cummulative details */}
 									<TrWrapper>
 										<td>Total Impressions</td>
 										<td>{summmationCampaignDetails.impressions}</td>
@@ -116,7 +129,6 @@ const Campaign = () => {
 										<td>Total CTR</td>
 										<td>{((summmationCampaignDetails.clicks/summmationCampaignDetails.impressions)/100).toFixed(7)}</td>
 									</TrWrapper>
-
 								</tbody>					
 							</TableWrapper>
 						</>
@@ -127,6 +139,7 @@ const Campaign = () => {
 						</>
 					)
 				) : (
+					// Pending Loader
 					<SkeletonLoader count={25} width="500px" />
 				)}
 
@@ -169,7 +182,6 @@ const TrWrapper = styled.tr`
 `;
 const TableWrapper = styled.table`
   width: 100%;
-
   box-shadow: 0px 0px 17px 1px #a7a7a7;
   thead {
     background: black;

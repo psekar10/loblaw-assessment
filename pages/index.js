@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
 // JS COMPONENTS
@@ -21,74 +21,74 @@ export default function Home() {
     router.push(`/campaign/${campaign.id}`)
   }
   /**
+   * Function to get the campaign
+   */
+    async function getCampaign() {
+    try {
+      let response = await fetch('http://localhost:4000/campaigns');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      let result = await response.json();
+      if (result.error || result.status === "failed") {
+        throw new Error(`Fetch - Update failed. Please check console logs. ${result.error}`);
+      }
+      setCampaigns(result.campaigns)
+    } catch(e) {
+      console.error('Error is: ', e);
+    } finally {
+      setPending(false);
+    }
+  }
+  /**
    *  useEffect - to get the campaigns
    */
   useEffect(() => {
-    /**
-     * Function to get the campaign
-     */
-		async function getCampaign() {
-			try {
-				let response = await fetch('http://localhost:4000/campaigns');
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				let result = await response.json();
-				if (result.error || result.status === "failed") {
-					throw new Error(`Fetch - Update failed. Please check console logs. ${result.error}`);
-				}
-				setCampaigns(result.campaigns)
-			} catch(e) {
-				console.error('Error is: ', e);
-			} finally {
-        setPending(false);
-      }
-		}
-		getCampaign()
+		getCampaign();
   }, [])
 
   return (
     <>
-    <Head>
-      <title>Loblaw | Home</title>
-      <link rel="canonical" href="" />
-      <meta name="description" content="Loblaw Campaign list" />
-    </Head>
-    <IndexContainer>
-      <h2 style={{marginTop:"0"}}>Campaign List</h2>
-      { !pending ? (
-        <TableWrapper>
-          <thead>
-            <tr>
-              <ThWrapper>ID</ThWrapper>
-              <ThWrapper>NAME</ThWrapper>
-            </tr>
-          </thead>
-          <tbody>
-            {campaigns.length !== 0 && campaigns.map((campaign, index) => {
-              return (
-                <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
-                  <TdWrapper>{campaign.id}</TdWrapper>
-                  <TdWrapper>
-                    <div style={{display:"flex"}}>
-                      <ColorWrapper color={campaign.name.toLowerCase()} />
-                      {campaign.name}
-                    </div>
+      <Head>
+        <title>Loblaw | Home</title>
+        <link rel="canonical" href="" />
+        <meta name="description" content="Loblaw Campaign list" />
+      </Head>
+      <IndexContainer>
+        <h2 style={{marginTop:"0"}}>Campaign List</h2>
+        { !pending ? (
+          <TableWrapper>
+            <thead>
+              <tr>
+                <ThWrapper>ID</ThWrapper>
+                <ThWrapper>NAME</ThWrapper>
+              </tr>
+            </thead>
+            <tbody>
+              {campaigns.length !== 0 && campaigns.map((campaign, index) => {
+                return (
+                  <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
+                    <TdWrapper>{campaign.id}</TdWrapper>
+                    <TdWrapper>
+                      <div style={{display:"flex"}}>
+                        <ColorWrapper color={campaign.name.toLowerCase()} />
+                        {campaign.name}
+                      </div>
 
-                  </TdWrapper>
-                </TrWrapper>
-              )
-            })}
-          </tbody>
-        </TableWrapper>
-      ) : (
-        <SkeletonLoader count={19} width="500px" />
-      )}
-    </IndexContainer>
+                    </TdWrapper>
+                  </TrWrapper>
+                )
+              })}
+            </tbody>
+          </TableWrapper>
+        ) : (
+          <SkeletonLoader count={19} width="500px" />
+        )}
+      </IndexContainer>
     </>
   )
 }
-
+// This is used while hovering the list
 const ColorContrast = {
   red: "#FFDBDB",
   green: "#ADFFAD",
