@@ -178,6 +178,7 @@ const TableWrapper = styled.table`
   }
 `;
 const Heading2 = styled.h2`
+	margin-top: 0;
 	@media (max-width: 768px) {
 		text-align: center;
 	}

@@ -55,7 +55,7 @@ export default function Home() {
       <meta name="description" content="Loblaw Campaign list" />
     </Head>
     <IndexContainer>
-      <h2>Campaign List</h2>
+      <h2 style={{marginTop:"0"}}>Campaign List</h2>
       { !pending ? (
         <TableWrapper>
           <thead>
