@@ -8,6 +8,7 @@ export default function Home() {
   const [campaigns, setCampaigns] = useState([])
 
   const handleCampaignClick = (campaign) => {
+    window.localStorage.setItem('color', campaign.name);
     router.push(`/campaign/${campaign.id}`)
   }
 
@@ -36,6 +37,7 @@ export default function Home() {
       <title>Loblaw | Home</title>
     </Head>
     <IndexContainer>
+      <h2>Campaign List</h2>
       <TableWrapper>
         <thead>
           <tr>
@@ -48,7 +50,13 @@ export default function Home() {
             return (
               <TrWrapper color={campaign.name} key={index} onClick={() => handleCampaignClick(campaign)}>
                 <TdWrapper>{campaign.id}</TdWrapper>
-                <TdWrapper>{campaign.name}</TdWrapper>
+                <TdWrapper>
+                  <div style={{display:"flex"}}>
+                    <ColorWrapper color={campaign.name.toLowerCase()} />
+                    {campaign.name}
+                  </div>
+
+                </TdWrapper>
               </TrWrapper>
             )
           })}
@@ -78,17 +86,28 @@ const IndexContainer = styled.div({
   width: "100%",
   display: "flex",
   flex: "1 1 0%",
+  flexDirection:"column",
   justifyContent: "center", 
   alignItems: "center",
 })
+// Table Wrapper
+const TableWrapper = styled.table`
+  width: 100%;
+  box-shadow: 0px 0px 17px 1px #a7a7a7;
+  thead {
+    background: gray;
+    color: white;
+    font-size: 18px;
+  }
+`;
+// Tr Wrapper
 const TrWrapper = styled.tr`
-  background-color: ${({ color }) => color.toLowerCase()};
-  color: ${({ color }) => ColorContrast[color.toLowerCase()]};
-  font-size: 18px;
+  color: black
   font-weight: 700;
   cursor: pointer;
   &:hover {
-		background-color: gray;
+		background-color: ${({ color }) => color.toLowerCase()};
+    color: ${({ color }) => ColorContrast[color.toLowerCase()]};
 	}
 `;
 // TH styling
@@ -102,25 +121,10 @@ const TdWrapper = styled.td`
   padding: 15px;
   text-align: left;
 `;
-const TableWrapper = styled.table`
-  width: 100%;
-
-  box-shadow: 0px 0px 17px 1px #a7a7a7;
-  thead {
-    background: black;
-    color: white;
-    font-size: 18px;
-  }
+const ColorWrapper = styled.div`
+  background: ${({ color }) => color};
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  border-radius: 50%
 `;
-// const TableWrapper = div
-// table {
-//   font-family: arial, sans-serif;
-//   border-collapse: collapse;
-//   width: 100%;
-// }
-
-// td, th {
-//   border: 1px solid #dddddd;
-//   text-align: left;
-//   padding: 8px;
-// }

@@ -1,11 +1,15 @@
+import Head from 'next/head';
 import Link from "next/link";
 import { useRouter } from 'next/router'
 import {useState, useEffect} from 'react';
 import styled from '@emotion/styled';
+// SVG
+import BackSVG from '../../assets/back'
 
 const Campaign = () => {
 	const router = useRouter();
 	const {query: {id}} = router;
+	const color = global.window && global.window.localStorage.getItem('color');
 	// State Initialization
 	const [timerCount, setTimerCount] = useState(0);
 	const [campaignDetails, setCampaignDetails] = useState([]);
@@ -29,6 +33,7 @@ const Campaign = () => {
 					clicks : summmationCampaignDetails.clicks + result.clicks,
 					users : summmationCampaignDetails.users + result.users
 				})
+
 			setTimerCount(timerCount => timerCount+1);
 		} catch(e) {
 			console.error('Error is: ', e);
@@ -51,51 +56,57 @@ const Campaign = () => {
 		}
   }, [id])
   return (
+		<>
+			<Head>
+				<title>Loblaw | Performance metrics</title>
+			</Head>
 			<CampaignContainer>
 				{!errorOccured ? (
 					<>
+						<Heading2>Performance Metrics - <span style={{color: color && color.toLowerCase()}}>{color}</span> campaign</Heading2>
 						<Link href="/">
-							<a style={{alignSelf:"flex-start", marginBottom:"20px"}}>Back</a>
+							<AnchorTag>
+								<BackSVG height="25px" width="25px"/>
+							</AnchorTag>
 						</Link>
-						
 						<TableWrapper>
 							<tbody>
 								<TrWrapper>
-									<TdWrapper>Pull</TdWrapper>
-									<TdWrapper>{timerCount}</TdWrapper>
+									<td>Current Number</td>
+									<td>{timerCount-1}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Most Recent Impressions</TdWrapper>
-									<TdWrapper>{campaignDetails.impressions}</TdWrapper>
+									<td>Most Recent Impressions</td>
+									<td>{campaignDetails.impressions}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Most Recent Clicks</TdWrapper>
-									<TdWrapper>{campaignDetails.clicks}</TdWrapper>
+									<td>Most Recent Clicks</td>
+									<td>{campaignDetails.clicks}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Most Recent Users</TdWrapper>
-									<TdWrapper>{campaignDetails.users}</TdWrapper>
+									<td>Most Recent Users</td>
+									<td>{campaignDetails.users}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Most Recent CTR</TdWrapper>
-									<TdWrapper>{((campaignDetails.clicks/campaignDetails.impressions)/100).toFixed(5)}</TdWrapper>
+									<td>Most Recent CTR</td>
+									<td>{((campaignDetails.clicks/campaignDetails.impressions)/100).toFixed(7)}</td>
 								</TrWrapper>
 
 								<TrWrapper>
-									<TdWrapper>Total Impressions</TdWrapper>
-									<TdWrapper>{summmationCampaignDetails.impressions}</TdWrapper>
+									<td>Total Impressions</td>
+									<td>{summmationCampaignDetails.impressions}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Total Clicks</TdWrapper>
-									<TdWrapper>{summmationCampaignDetails.clicks}</TdWrapper>
+									<td>Total Clicks</td>
+									<td>{summmationCampaignDetails.clicks}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Total Users</TdWrapper>
-									<TdWrapper>{summmationCampaignDetails.users}</TdWrapper>
+									<td>Total Users</td>
+									<td>{summmationCampaignDetails.users}</td>
 								</TrWrapper>
 								<TrWrapper>
-									<TdWrapper>Total CTR</TdWrapper>
-									<TdWrapper>{((summmationCampaignDetails.clicks/summmationCampaignDetails.impressions)/100).toFixed(5)}</TdWrapper>
+									<td>Total CTR</td>
+									<td>{((summmationCampaignDetails.clicks/summmationCampaignDetails.impressions)/100).toFixed(7)}</td>
 								</TrWrapper>
 
 							</tbody>					
@@ -108,6 +119,7 @@ const Campaign = () => {
 					</>
 				)}
 			</CampaignContainer>
+		</>
 	)
 }
 
@@ -135,17 +147,13 @@ const TrWrapper = styled.tr`
 	&:nth-of-type(odd) {
 		background-color: lightgray;
 	}
-`;
-// TH styling
-const ThWrapper = styled.th`
-  text-transform: uppercase;
-  padding: 15px;
-  text-align: left;
-`;
-// TD styling
-const TdWrapper = styled.td`
-  padding: 15px;
-  text-align: left;
+	td {
+		padding: 15px;
+		text-align: left;
+	}
+	td:nth-of-type(2) {
+		width: 150px;
+	}
 `;
 const TableWrapper = styled.table`
   width: 100%;
@@ -156,4 +164,21 @@ const TableWrapper = styled.table`
     color: white;
     font-size: 18px;
   }
+`;
+const Heading2 = styled.h2`
+	@media (max-width: 768px) {
+		text-align: center;
+	}
+	span {
+		text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+		letter-spacing: 2px;
+	}
+`;
+const AnchorTag = styled.a`
+	align-self: flex-start;
+	margin-bottom: 20px;
+	cursor: pointer;
+	@media (max-width: 768px) {
+		padding-left: 20px;
+	}
 `;
