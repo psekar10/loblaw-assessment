@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from 'react';
 import styled from '@emotion/styled';
 import LogoSVG from '../assets/logo';
@@ -7,18 +8,21 @@ import LogoSVG from '../assets/logo';
  * @returns 
  */
 const Navbar = () => (
-  <NavbarContainer>
-		<LogoSVG height="150px" width="150px"/>
-		<h1 style={{paddingLeft: "15px"}}>UI ASSESSMENT</h1>
-	</NavbarContainer>
+	<Link href="/">
+		<AnchorContainer>
+			<LogoSVG height="150px" width="150px"/>
+			<h1 style={{paddingLeft: "15px"}}>UI ASSESSMENT</h1>
+		</AnchorContainer>
+	</Link>
 )
 
 export default Navbar;
 
-// Navbar Styling
-const NavbarContainer = styled.div`
+// anchor Styling
+const AnchorContainer = styled.a`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background: #eceaea;
+	cursor: pointer;
 `;
